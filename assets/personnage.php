@@ -7,6 +7,7 @@
         protected $race;
         protected $action = array("attaquespe"=>"boule d'énergie", "attaque"=>"coup physique","defense"=>"esquive");
         protected $nbaction;
+        protected $isDeadFlag = false;
 
 
         public function __construct($N,$P,$Z){
@@ -43,23 +44,27 @@
             $this->race = $NewRace;
          }
          
-
-         public function PVloss($d){
-
-            if($this->pointsdevie > 0){
-                $this->pointsdevie = $this->pointsdevie - $d;
-                echo($this->pointsdevie);
-            } else {
-                echo $this->nom . "est mort";
-                return;
-            }
-    
-
+         public function isDead(){
+            if (!$this->isDeadFlag) {
+               echo $this->nom . " est mort\n";
+               $this->isDeadFlag = true;
+           }
+            
          }
 
+         public function PVloss($d){
+            echo "Points de vie before: " . $this->pointsdevie . "\n";
+            echo "Damage: " . $d . "\n";
+            $this->pointsdevie -= $d;
+
+            if($this->pointsdevie <= 0 && !$this->isDeadFlag) {
+               $this->isDead();
+           } 
+           
 
 
 
+      }
 
     }
 ?>
