@@ -5,7 +5,7 @@
         protected int $puissance;
         protected int $pointsdevie;
         protected $race;
-        protected $action[] = ["boule d'énergie", "coup physique", "esquive"];
+        protected $action = array("attaquespe"=>"boule d'énergie", "attaque"=>"coup physique","defense"=>"esquive");
         protected $nbaction;
 
 
@@ -44,14 +44,11 @@
          }
          
 
-
-
-
-
          public function PVloss($d){
 
-            if($pointsdevie > 0){
-                $pointsdevie = $pointsdevie - $d
+            if($this->pointsdevie > 0){
+                $this->pointsdevie = $this->pointsdevie - $d;
+                echo($this->pointsdevie);
             } else {
                 echo $this->nom . "est mort";
                 return;
