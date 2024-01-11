@@ -22,6 +22,7 @@
     $PersonnageSelection;
     $PersonnageEnemy;
     $Score = 0;
+    $Argent = 0;
     
 
     echo ("Bonjour, choisissez votre combattant !'\n");
@@ -59,7 +60,7 @@
     }
 
     
-    echo $PersonnageSelection->getNom(). " ! Préparez vous au combat ! \n " ;
+    echo $PersonnageSelection->getNom(). " ! Préparez vous au combat ! \nVous devez effectuer 5 victoires d'affilés pour gagner la partie. \n" ;
    
     //boucle des combats
     while($PersonnageSelection->getPV()>0){
@@ -87,11 +88,41 @@
                 $PersonnageEnemy = $Boo2;
                 break;
         }
+        while($PersonnageEnemy->deadStatus() == true){
 
-        echo $PersonnageEnemy->getNom() . " veut vous affronter en duel ! \nUn combat éclate !";
+            $idenemy = rand(1,6);
+        
+        switch($idenemy){
+
+            case 1:
+                $PersonnageEnemy = $Goku2;
+                break;
+            case 2:
+                $PersonnageEnemy = $Vegeta2;
+                break;
+            case 3:
+                $PersonnageEnemy = $Freezer2;
+                break;
+            case 4:
+                $PersonnageEnemy = $Cell2;
+                break;
+            case 5:
+                $PersonnageEnemy = $Piccolo2;
+                break;
+            case 6:
+                $PersonnageEnemy = $Boo2;
+                break;
+        }
+
+        }
+        echo $PersonnageEnemy->getNom() . " veut vous affronter en duel ! \nUn combat éclate !\n";
         while($PersonnageEnemy->getPV() > 0){
             if($PersonnageSelection->getPV()>0){
-            $choix = (int)readline("Que voulez-vous faire ? : 1 - Envoyer une boule d'énergie, 2 - Effectuer un coup physique, 3 - Esquiver \n");
+            $choix = (int)readline("Que voulez-vous faire ? : 1 - Envoyer une boule d'énergie, 2 - Effectuer un coup physique, 3 - Esquiver, ");
+            if( $Score > 1 ){
+                 echo "4 - ". $PersonnageSelection->special()[0]; 
+                } 
+            echo " /n ";
             $choixenemy = rand(1,3);
             switch($choix){
 
@@ -99,22 +130,51 @@
                     $PersonnageEnemy->PVloss($PersonnageSelection->attaquespe());
                     echo $PersonnageSelection->getNom() . " envoie des boules d'énergies à " . $PersonnageEnemy->getNom() . "\n";
                     echo $PersonnageEnemy->getNom() . " a perdu " . $PersonnageSelection->attaquespe() . ", il lui reste actuellement " . $PersonnageEnemy->getPV() . "\n";
+                    if($PersonnageSelection->getTitre() == "Gentil"){
+                        $PersonnageSelection->enrage();
+                        $PersonnageSelection->bienveillanceMax();
+                    } else if ($PersonnageEnemy->getTitre() == "Méchant"){
+                        $PersonnageEnemy->sanguin();
+                        $PersonnageSelection->malveillanceMax();
+                    }
                     break;
                 case 2: 
                     $PersonnageEnemy->PVloss($PersonnageSelection->attaque());
                     echo $PersonnageSelection->getNom() . " met des coups à " . $PersonnageEnemy->getNom() . "\n";
                     echo $PersonnageEnemy->getNom() . " a perdu " . $PersonnageSelection->attaque() . ", il lui reste actuellement " . $PersonnageEnemy->getPV() . "\n";
+                    if($PersonnageSelection->getTitre() == "Gentil"){
+                        $PersonnageSelection->enrage();
+                        $PersonnageSelection->bienveillanceMax();
+                    } else if ($PersonnageEnemy->getTitre() == "Méchant"){
+                        $PersonnageEnemy->sanguin();
+                        $PersonnageSelection->malveillanceMax();
+                    }
                     break;
+                    
                 case 3: 
                     $PersonnageSelection->PVloss($PersonnageEnemy->attaque());
                     $PersonnageSelection->esquive($PersonnageEnemy->attaque());
                     echo $PersonnageSelection->getNom() . " esquive les attaques de " . $PersonnageEnemy->getNom() . "\n";
+                    if($PersonnageSelection->getTitre() == "Gentil"){
+                        $PersonnageSelection->enrage();
+                        $PersonnageSelection->bienveillanceMax();
+                    } else if ($PersonnageEnemy->getTitre() == "Méchant"){
+                        $PersonnageEnemy->sanguin();
+                        $PersonnageSelection->malveillanceMax();
+                    }
                     break;
 
                 case ($Score > 0 && 4):
                         $PersonnageEnemy->PVloss($PersonnageSelection->special()[1]);
                         echo $PersonnageSelection->getNom() . " effectue un " . $PersonnageSelection->special()[0] . "\n";
                         echo $PersonnageEnemy->getNom() . " a perdu " . $PersonnageSelection->special()[1] . ", il lui reste actuellement " . $PersonnageEnemy->getPV() . "\n";
+                        if($PersonnageSelection->getTitre() == "Gentil"){
+                            $PersonnageSelection->enrage();
+                            $PersonnageSelection->bienveillanceMax();
+                        } else if ($PersonnageEnemy->getTitre() == "Méchant"){
+                            $PersonnageEnemy->sanguin();
+                            $PersonnageSelection->malveillanceMax();
+                        }
 
                 
                 }
@@ -124,16 +184,37 @@
                     $PersonnageSelection->PVloss($PersonnageEnemy->attaquespe());
                     echo $PersonnageEnemy->getNom() . " envoie des boules d'énergies à " . $PersonnageSelection->getNom() . "\n";
                     echo $PersonnageSelection->getNom() . " a perdu " . $PersonnageEnemy->attaquespe() . ", il lui reste actuellement " . $PersonnageSelection->getPV() . "\n";
+                    if($PersonnageSelection->getTitre() == "Gentil"){
+                        $PersonnageSelection->enrage();
+                        $PersonnageSelection->bienveillanceMax();
+                    } else if ($PersonnageEnemy->getTitre() == "Méchant"){
+                        $PersonnageEnemy->sanguin();
+                        $PersonnageSelection->malveillanceMax();
+                    }
                     break;
                 case 2: 
-                    $PersonnageEnemy->PVloss($PersonnageSelection->attaque());
+                    $PersonnageSelection->PVloss($PersonnageEnemy->attaque());
                     echo $PersonnageEnemy->getNom() . " met des coups à " . $PersonnageSelection->getNom() . "\n";
                     echo $PersonnageSelection->getNom() . " a perdu " . $PersonnageEnemy->attaque() . ", il lui reste actuellement " . $PersonnageSelection->getPV() . "\n";
+                    if($PersonnageSelection->getTitre() == "Gentil"){
+                        $PersonnageSelection->enrage();
+                        $PersonnageSelection->bienveillanceMax();
+                    } else if ($PersonnageEnemy->getTitre() == "Méchant"){
+                        $PersonnageEnemy->sanguin();
+                        $PersonnageSelection->malveillanceMax();
+                    }
                     break;
                 case 3: 
                     $PersonnageEnemy->PVloss($PersonnageSelection->attaque());
                     $PersonnageEnemy->esquive($PersonnageSelection->attaque());
                     echo $PersonnageEnemy->getNom() . " esquive les attaques de " . $PersonnageSelection->getNom() . "\n";
+                    if($PersonnageSelection->getTitre() == "Gentil"){
+                        $PersonnageSelection->enrage();
+                        $PersonnageSelection->bienveillanceMax();
+                    } else if ($PersonnageEnemy->getTitre() == "Méchant"){
+                        $PersonnageEnemy->sanguin();
+                        $PersonnageSelection->malveillanceMax();
+                    }
                     break;
 
             }
@@ -148,16 +229,14 @@
 
         }
           
-        
-
-
-
-
-    
     }
     echo $PersonnageSelection->getNom() . " a remporté la victoire ! \n";
-
     $Score++;
+    $Argent = $Argent + 20;
+    if ($Score > 4) {
+        echo "La partie est terminée";
+        return;
+    }
 }
 
 

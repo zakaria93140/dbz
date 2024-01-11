@@ -4,9 +4,7 @@
         protected $nom;
         protected int $puissance;
         protected int $pointsdevie;
-        protected $race;
         protected $action = array("boule d'énergie", "attaque physique", "esquive");
-        protected $nbaction;
         protected $isDeadFlag = false;
         protected $coupUltime = array("Kamehameha", "Final Flash", "Masenko Sappo", "Death Beam", "Big Bang Crash", "Majin Kamehameha");
 
@@ -87,6 +85,10 @@
                $this->isDeadFlag = true;
            }
             
+         }
+
+         public function deadStatus(){
+            return $this->isDeadFlag;
          }
 
          public function getAction($i){
