@@ -6,6 +6,7 @@
         protected int $pointsdevie;
         protected $action = array("boule d'énergie", "attaque physique", "esquive");
         protected $isDeadFlag = false;
+        protected $EsquiveState = false;
         protected $coupUltime = array("Kamehameha", "Final Flash", "Masenko Sappo", "Death Beam", "Big Bang Crash", "Majin Kamehameha");
 
 
@@ -98,8 +99,7 @@
          }
 
          public function PVloss($d){
-            echo "Points de vie before: " . $this->pointsdevie . "\n";
-            echo "Damage: " . $d . "\n";
+
             $this->pointsdevie -= $d;
 
             if($this->pointsdevie <= 0 && !$this->isDeadFlag) {
@@ -111,7 +111,6 @@
 
             $attaquenormal = $this->getPuissance() / 10;
             return $attaquenormal;
-
          }
 
          public function attaquespe(){
@@ -121,11 +120,18 @@
 
          }
 
-         public function esquive($i){
+         public function setEsquive(){
 
-            $this->pointsdevie = $this->pointsdevie + $i;
-            return 0;
+            $this->EsquiveState = true;
 
+         }
+
+         public function getEsquive(){
+            return $this->EsquiveState;
+         }
+         
+         public function unsetEsquive(){
+            $this->EsquiveState = false;
          }
 
     }
